@@ -14,7 +14,9 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
+// const navigate = useNavigate();
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -40,7 +42,8 @@ export default function SignInCard() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
+  const [serverError, setServerError] = React.useState("");//안되면 밖으로 빼보기
+ const navigate = useNavigate();
 
 
   const handleClickOpen = () => {
@@ -51,18 +54,37 @@ export default function SignInCard() {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (emailError || passwordError) {
-      event.preventDefault();
+     // event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate('/flipcardpage');
-
+    const loginData = {
+      name: data.get("email"),
+      passWord: data.get("password") ?? "",
+    };
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+   // navigate('/flipcardpage');
+   try {
+    const response = await axios.post("http://localhost:8080/users/login", loginData);
+    console.log("로그인 성공:", response.data);
+    navigate("/flipcardpage");
+  } catch (error) {
+    if(error.response){
+      console.error("로그인 실패: ", error.response.data);
+      setServerError(error.response.data);
+    }else{
+      console.error("로그인 실패: ", error.message);
+      setServerError("서버 연결에 실패했습니다.");
+    }
+   // console.error("로그인 실패:", error.response ? error.response.data : error.message);
+  }
   };
 
   const validateInputs = () => {
@@ -104,6 +126,14 @@ export default function SignInCard() {
       >
         Sign in
       </Typography>
+
+      {/* 🔹 백엔드에서 받은 오류 메시지를 화면에 표시 */}
+      {serverError && (
+        <Typography color="error" sx={{ textAlign: "center", marginBottom: "10px" }}>
+          {serverError}
+        </Typography>
+      )}
+      
       <Box
         component="form"
         onSubmit={handleSubmit}
