@@ -7,7 +7,7 @@ export function SitemarkIcon() {
     <img 
           src={SamsungLogo} 
           alt="Samsung" 
-          style={{ width: '100px', height: '50px', objectFit: 'contain' }} 
+          style={{ width: '80px', height: '30px', objectFit: 'contain' }} 
         />
     // <SvgIcon sx={{ height: 21, width: 100, mr: 2 }}>
     //   <svg
