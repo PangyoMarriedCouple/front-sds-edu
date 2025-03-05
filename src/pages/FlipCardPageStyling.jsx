@@ -8,15 +8,11 @@ function FlipCardPageStyling() {
 
     const shuffledNames = [
         '테케이스트스', '이케스트스테', '이테스케트스', '이케스스테트', '트스이스테케',
-        '케테이트스스', '스케테스트이', '스이스케테트', '케트스테스이', '이트스케테스',
-        '테스케스트이', '스케이트테스', '테케트스이스', '스스테케이트', '스트스케테이',
-        '스케이스트테', '이트케테스스', '스트스이테케', '트케테이스스', '테이케트스스',
-        '스스케테이트', '이트케스테스', '테스트케이스', '스케이트테스', '스이테트케스',
-        '이케테스스트', '스스이테트케', '케테스이스트', '테이스케스트', '스트케테이스'
+        '케테이트스스', '스케테스트이', '스이스케테트', '케트스테스이', '이트스케테스','케트스테스이', '이트스케테스'
     ];
 
     // for auto flip
-    const [flipStates, setFlipStates] = useState(new Array(30).fill(false)); // false: 카드가 뒤집어지지 않음
+    const [flipStates, setFlipStates] = useState(new Array(12).fill(false)); // false: 카드가 뒤집어지지 않음
     useEffect(() => {
         const interval = setInterval(() => {
             // 랜덤으로 2개의 카드 인덱스 선택
@@ -110,7 +106,7 @@ function FlipCardPageStyling() {
                         containerStyle={styles.cardContainer}
                         frontStyle={styles.card}
                         backStyle={styles.card}
-                        frontComponent={<MediaCard/>}
+                        frontComponent={<MediaCard photoId={index}/>}
                         backComponent={<OutlinedCard/>}
                         onClick={() => handleCardClick(name)}
                         flipByProp={flipStates[index]}
