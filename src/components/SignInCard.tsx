@@ -93,9 +93,9 @@ export default function SignInCard() {
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    if (!email.value) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage('Please enter a valid Nickname.');
       isValid = false;
     } else {
       setEmailError(false);
@@ -141,14 +141,14 @@ export default function SignInCard() {
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="email">Nickname</FormLabel>
           <TextField
             error={emailError}
             helperText={emailErrorMessage}
             id="email"
             type="email"
             name="email"
-            placeholder="your@email.com"
+            placeholder="Nickname"
             autoComplete="email"
             autoFocus
             required
@@ -196,10 +196,17 @@ export default function SignInCard() {
         <Typography sx={{ textAlign: 'center' }}>
           Don&apos;t have an account?{' '}
           <span>
-            <Link
+            {/* <Link
               href="/material-ui/getting-started/templates/sign-in/"
               variant="body2"
               sx={{ alignSelf: 'center' }}
+            >
+              Sign up
+            </Link> */}
+            <Link
+              onClick={() => navigate('/signup')}
+              variant="body2"
+              sx={{ alignSelf: 'center', cursor: 'pointer' }}
             >
               Sign up
             </Link>
