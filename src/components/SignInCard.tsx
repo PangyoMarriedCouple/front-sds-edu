@@ -37,8 +37,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignInCard() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [nicknameError, setNicknameError] = React.useState(false);
+  const [nicknameErrorMessage, setNicknameErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
@@ -57,17 +57,17 @@ export default function SignInCard() {
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (emailError || passwordError) {
+    if (nicknameError || passwordError) {
      // event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
     const loginData = {
-      name: data.get("email"),
+      name: data.get("nickname"),
       passWord: data.get("password") ?? "",
     };
     // console.log({
-    //   email: data.get("email"),
+    //   nickname: data.get("nickname"),
     //   password: data.get("password"),
     // });
    // navigate('/flipcardpage');
@@ -88,18 +88,18 @@ export default function SignInCard() {
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
+    const nickname = document.getElementById('nickname') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
 
     let isValid = true;
 
-    if (!email.value) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid Nickname.');
+    if (!nickname.value) {
+      setNicknameError(true);
+      setNicknameErrorMessage('Please enter a valid Nickname.');
       isValid = false;
     } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
+      setNicknameError(false);
+      setNicknameErrorMessage('');
     }
 
     if (!password.value || password.value.length < 6) {
@@ -141,20 +141,20 @@ export default function SignInCard() {
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Nickname</FormLabel>
+          <FormLabel htmlFor="nickname">Nickname</FormLabel>
           <TextField
-            error={emailError}
-            helperText={emailErrorMessage}
-            id="email"
-            type="email"
-            name="email"
+            error={nicknameError}
+            helperText={nicknameErrorMessage}
+            id="nickname"
+            type="nickname"
+            name="nickname"
             placeholder="Nickname"
-            autoComplete="email"
+            autoComplete="nickname"
             autoFocus
             required
             fullWidth
             variant="outlined"
-            color={emailError ? 'error' : 'primary'}
+            color={nicknameError ? 'error' : 'primary'}
           />
         </FormControl>
         <FormControl>
