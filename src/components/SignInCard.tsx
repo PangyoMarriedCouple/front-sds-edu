@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import { useNavigate } from 'react-router-dom';
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -38,6 +40,8 @@ export default function SignInCard() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -57,6 +61,8 @@ export default function SignInCard() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    navigate('/flipcardpage');
+
   };
 
   const validateInputs = () => {
