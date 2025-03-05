@@ -51,12 +51,8 @@ function FlipCardPage() {
     
     const fetchShuffledNames = async () =>{
         try{
-            const response = await axios.get('http://localhost:9000/start')
+            const response = await axios.get('http://localhost:8080/start')
             const data = response.data;
-            console.log(data);
-            // setGuestHouseId(data.guestHouseId);
-            // setOriginalName(data.originalName);
-            // setShuffledNames(data.shuffledNames);
             return {
                 guestHouseId: data.guestHouseId,
                 originalName: data.guestHouseName,
@@ -68,10 +64,11 @@ function FlipCardPage() {
         }
     };
 
+    const originalNameRef = useRef('');
+
     const startGame = async () => {
         const gameData = await fetchShuffledNames();
         if (gameData) {
-            console.log(gameData);
             setGuestHouseId(gameData.guestHouseId);
             setOriginalName(gameData.originalName);
             setShuffledNames(gameData.shuffledNames);
@@ -89,6 +86,7 @@ function FlipCardPage() {
           const elapsedTime = (now - startTime) / 1000;
           alert(`게임 완료! 걸린 시간: ${elapsedTime}초`);
         } else {
+          console.log(originalNameRef.current);
           alert('땡!');
         }
     };
