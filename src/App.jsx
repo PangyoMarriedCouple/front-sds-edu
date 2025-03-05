@@ -6,7 +6,7 @@ import SignInSide from './pages/SignInSide.tsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FlipCardPage from './pages/FlipCardPage.jsx'
 import FlipCardPageStyling from './pages/FlipCardPageStyling.jsx'
-
+import SignUpPage from './pages/SignUpPage.tsx'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -40,6 +40,7 @@ function App() {
         <Route path="/" element={<SignInSide />} />
         <Route path="/flipcardpage" element={<FlipCardPage />} />
         <Route path="/styling" element={<FlipCardPageStyling />} />
+        <Route path="/signup" element={<SignUpPage />} />
       </Routes>
     </Router>
     </>

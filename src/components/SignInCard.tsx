@@ -14,7 +14,9 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
+// const navigate = useNavigate();
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -35,12 +37,13 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignInCard() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [nicknameError, setNicknameError] = React.useState(false);
+  const [nicknameErrorMessage, setNicknameErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
+  const [serverError, setServerError] = React.useState("");//안되면 밖으로 빼보기
+ const navigate = useNavigate();
 
 
   const handleClickOpen = () => {
@@ -51,33 +54,52 @@ export default function SignInCard() {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (nicknameError || passwordError) {
+     // event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate('/flipcardpage');
-
+    const loginData = {
+      name: data.get("nickname"),
+      passWord: data.get("password") ?? "",
+    };
+    // console.log({
+    //   nickname: data.get("nickname"),
+    //   password: data.get("password"),
+    // });
+   // navigate('/flipcardpage');
+   try {
+    const response = await axios.post("http://localhost:8080/users/login", loginData);
+    console.log("로그인 성공:", response.data);
+    navigate("/flipcardpage");
+  } catch (error) {
+    if(error.response){
+      console.error("로그인 실패: ", error.response.data);
+      setServerError(error.response.data);
+    }else{
+      console.error("로그인 실패: ", error.message);
+      setServerError("서버 연결에 실패했습니다.");
+    }
+   // console.error("로그인 실패:", error.response ? error.response.data : error.message);
+  }
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
+    const nickname = document.getElementById('nickname') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+    if (!nickname.value) {
+      setNicknameError(true);
+      setNicknameErrorMessage('Please enter a valid Nickname.');
       isValid = false;
     } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
+      setNicknameError(false);
+      setNicknameErrorMessage('');
     }
 
     if (!password.value || password.value.length < 6) {
@@ -104,6 +126,14 @@ export default function SignInCard() {
       >
         Sign in
       </Typography>
+
+      {/* 🔹 백엔드에서 받은 오류 메시지를 화면에 표시 */}
+      {serverError && (
+        <Typography color="error" sx={{ textAlign: "center", marginBottom: "10px" }}>
+          {serverError}
+        </Typography>
+      )}
+      
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -111,20 +141,20 @@ export default function SignInCard() {
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="nickname">Nickname</FormLabel>
           <TextField
-            error={emailError}
-            helperText={emailErrorMessage}
-            id="email"
-            type="email"
-            name="email"
-            placeholder="your@email.com"
-            autoComplete="email"
+            error={nicknameError}
+            helperText={nicknameErrorMessage}
+            id="nickname"
+            type="nickname"
+            name="nickname"
+            placeholder="Nickname"
+            autoComplete="nickname"
             autoFocus
             required
             fullWidth
             variant="outlined"
-            color={emailError ? 'error' : 'primary'}
+            color={nicknameError ? 'error' : 'primary'}
           />
         </FormControl>
         <FormControl>
@@ -166,10 +196,17 @@ export default function SignInCard() {
         <Typography sx={{ textAlign: 'center' }}>
           Don&apos;t have an account?{' '}
           <span>
-            <Link
+            {/* <Link
               href="/material-ui/getting-started/templates/sign-in/"
               variant="body2"
               sx={{ alignSelf: 'center' }}
+            >
+              Sign up
+            </Link> */}
+            <Link
+              onClick={() => navigate('/signup')}
+              variant="body2"
+              sx={{ alignSelf: 'center', cursor: 'pointer' }}
             >
               Sign up
             </Link>
