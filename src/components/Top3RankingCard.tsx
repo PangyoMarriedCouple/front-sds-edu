@@ -37,6 +37,7 @@ const Top3RankingCard = ({guestHouseId}) => {
                 const response = await axios.get(`http://localhost:8080/ranking/top3/${guestHouseId}`);
                 //alert(JSON.stringify(response));
                 // 받아온 데이터를 리액트에서 활용할 형태로 변환
+                console.log( response );
                 const processedData = response.data.map(item => ({
                     id: item.rankingId,
                     user: item.user.name,

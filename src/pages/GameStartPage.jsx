@@ -1,4 +1,4 @@
-import { useState,useRef } from 'react'
+import { useState,useRef, useEffect } from 'react'
 import ReactFlipCard from 'reactjs-flip-card'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -40,8 +40,8 @@ function GameStartPage() {
     const [guestHouseId, setGuestHouseId] = useState(null);
     const [originalName, setOriginalName] = useState('');
     const [gameStarted, setGameStarted] = useState(false);
-    const [timeElapsed, setTimeElapsed] = useState(null);
     const [startTime, setStartTime] = useState(null);
+    const [elapsedTime, setElapsedTime] = useState(null);
     const [endTime, setEndTime] = useState(null);  // 게임 종료 시간
     
     const navigate = useNavigate();
@@ -75,23 +75,95 @@ function GameStartPage() {
         }
     };
 
-    const handleCardClick = (name) => {
-        if(gameStarted){
+    const addRanking = async (newElapsedTime) => {
+        try {
+            const rankingData = {
+                userId: localStorage.getItem("userId") || "2",
+                guestHouseId: guestHouseId || 1,
+                durationSeconds: newElapsedTime,
+                discountRate: 0.1
+            };
+            
+            const response = await axios.post('http://localhost:8080/ranking/addRanking', rankingData, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+    
+            console.log("랭킹이 기록되었습니다. 서버에 저장된 기록:", response.data?.durationSeconds, "랭킹 아이디:", response.data?.rankingId);
+    
+            return response.data; // ✅ 데이터를 반환하여 handleCardClick에서 사용 가능하도록 변경
+        } catch (error) {
+            console.error('Error adding Ranking: ', error);
+            return null; // 에러 발생 시 null 반환
+        }
+    };
+
+    const handleCardClick = async (name) => {
+        if (gameStarted) {
             const trimmedOriginalName = originalName.replace(/\s/g, '');
             const now = Date.now();
-            const elapsedTime = (now-startTime)/1000;
-            const isCorrect = name===trimmedOriginalName;
-
-            navigate('/result',{
-                state:{
-                    elapsedTime: elapsedTime.toFixed(3),
+            const newElapsedTime = parseFloat(((now - startTime) / 1000).toFixed(3));
+            setElapsedTime(newElapsedTime);
+            const isCorrect = name === trimmedOriginalName;
+    
+            if (isCorrect) {
+                try {
+                    // ✅ addRanking의 응답을 기다린 후 실행
+                    const rankingResponse = await addRanking(newElapsedTime);
+                    console.log("랭킹 기록 완료:", rankingResponse);
+                } catch (error) {
+                    console.error("랭킹 저장 중 오류 발생:", error);
+                }
+            }
+    
+            // ✅ 랭킹 저장 완료 후 결과 페이지로 이동
+            navigate('/result', {
+                state: {
+                    elapsedTime: newElapsedTime,
                     isCorrect,
                     guestHouseId: guestHouseId
                 }
             });
         }
-        
     };
+
+        // for auto flip
+        const [flipStates, setFlipStates] = useState(new Array(12).fill(false)); // false: 카드가 뒤집어지지 않음
+        useEffect(() => {
+            const interval = setInterval(() => {
+                // 랜덤으로 2개의 카드 인덱스 선택
+                const randomIndexes = [];
+                while (randomIndexes.length < 2) {
+                    const rand = Math.floor(Math.random() * 30);
+                    if (!randomIndexes.includes(rand)) {
+                        randomIndexes.push(rand);
+                    }
+                }
+    
+                // 해당 카드들을 뒤집음
+                setFlipStates(prev => {
+                    const newFlipStates = [...prev];
+                    randomIndexes.forEach(index => {
+                        newFlipStates[index] = true; // 뒤집기
+                    });
+                    return newFlipStates;
+                });
+    
+                // 1초 뒤에 다시 원래 상태로 돌아가도록 설정
+                setTimeout(() => {
+                    setFlipStates(prev => {
+                        const newFlipStates = [...prev];
+                        randomIndexes.forEach(index => {
+                            newFlipStates[index] = false; // 원상복구
+                        });
+                        return newFlipStates;
+                    });
+                }, 1000);
+            }, 1000);
+    
+            return () => clearInterval(interval);
+        }, []);
+
+        console.log( localStorage.getItem("userId") , localStorage.getItem("userName")  );
 
     return (
         <div>
@@ -113,6 +185,7 @@ function GameStartPage() {
                             :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="게임시작 클릭!" />
                         }</div>}
                         onClick={() => handleCardClick(name)}
+                        flipByProp={gameStarted ? false : flipStates[index]}
                     />
                 ))}
             </div>
