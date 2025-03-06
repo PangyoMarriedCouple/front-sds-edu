@@ -6,11 +6,12 @@ interface OutlinedCardProps {
   title: string;
   subtitle: string;
   description: string;
+  isGameStarted: boolean;
 }
 
-const OutlinedCard: React.FC<OutlinedCardProps> = ({ title, subtitle, description }) => {
+const OutlinedCard: React.FC<OutlinedCardProps> = ({ title, subtitle, description, isGameStarted = false }) => {
   return (
-      <Card variant="outlined" sx={{ width: 150, height: 200 }}>
+      <Card variant="outlined" sx={{ width: 150, height: 200, backgroundColor: isGameStarted ?'rgb(206, 182, 163)':'white',}}>
         <CardContent>
           <Typography gutterBottom sx={{ color: "text.secondary", fontSize: 12 }}>
             Reserve Rush
