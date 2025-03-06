@@ -88,8 +88,6 @@ function GameStartPage() {
                     isCorrect
                 }
             });
-        }else{
-
         }
         
     };
@@ -111,7 +109,7 @@ function GameStartPage() {
                         backComponent={<div>
                             {gameStarted ?
                             <OutlinedCard title="이게 정답..?" subtitle=""  description="" />
-                            :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="클릭해서 게임 시작하기" />
+                            :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="게임시작 클릭!" />
                         }</div>}
                         onClick={() => handleCardClick(name)}
                     />
