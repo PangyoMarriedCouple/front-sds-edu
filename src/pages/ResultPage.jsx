@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import GuestHouseResult from '../components/GuestHouseResult';
+import Top3RankingCard from '../components/Top3RankingCard'
 
 const ResultPage = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const ResultPage = () => {
         <p>😢 아쉽네요. 다음에 다시 도전해보세요.</p>
       )}
       <p>⏱️ 걸린 시간: {elapsedTime}초</p>
-
+      {guestHouseId && <Top3RankingCard guestHouseId={guestHouseId} />}
       {guestHouseId && <GuestHouseResult guestHouseId={guestHouseId} />}
     </div>
   );

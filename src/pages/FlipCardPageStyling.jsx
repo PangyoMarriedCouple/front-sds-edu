@@ -47,7 +47,7 @@ function FlipCardPageStyling() {
 
         return () => clearInterval(interval);
     }, []);
-
+    
     const styles = {
         cardContainer: {  // 부모 div: 100px × 150px
             width: '150px',
