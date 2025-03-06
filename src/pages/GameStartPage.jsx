@@ -40,8 +40,8 @@ function GameStartPage() {
     const [guestHouseId, setGuestHouseId] = useState(null);
     const [originalName, setOriginalName] = useState('');
     const [gameStarted, setGameStarted] = useState(false);
-    const [timeElapsed, setTimeElapsed] = useState(null);
     const [startTime, setStartTime] = useState(null);
+    const [elapsedTime, setElapsedTime] = useState(null);
     const [endTime, setEndTime] = useState(null);  // 게임 종료 시간
     
     const navigate = useNavigate();
@@ -75,21 +75,47 @@ function GameStartPage() {
         }
     };
 
+    const addRanking = async ( newElapsedTime ) =>{
+        try{
+            const rankingData = {
+                userId: localStorage.getItem("userId") ? localStorage.getItem("userId") : "2",
+                guestHouseId: guestHouseId ? guestHouseId : 1,
+                durationSeconds: newElapsedTime,
+                discountRate: 0.1
+            };
+            const response = await axios.post('http://localhost:8080/ranking/addRanking', rankingData, {
+                headers: {
+                  'Content-Type': 'application/json', 
+                },
+            });
+            const data = response.data;
+            console.log(data);
+            console.log( "랭킹이 기록되었습니다. 서버에 저장된 기록 : " , data?.durationSeconds , "랭킹 아이디 : ", data?.rankingId  );
+        }catch(error){
+            console.error('Error adding Ranking: ', error);
+            return null;
+        }
+    };
+
     const handleCardClick = (name) => {
         if(gameStarted){
             const trimmedOriginalName = originalName.replace(/\s/g, '');
             const now = Date.now();
-            const elapsedTime = (now-startTime)/1000;
+            const newElapsedTime = parseFloat(((now - startTime) / 1000).toFixed(3));
+            setElapsedTime( newElapsedTime );
+
             const isCorrect = name===trimmedOriginalName;
+            console.log(elapsedTime);
+            console.log(isCorrect);
 
             if(isCorrect===true){
                 // 정답 맞았을 시에 랭킹 추가 
-                
+                addRanking( newElapsedTime );
             }
 
             navigate('/result',{
                 state:{
-                    elapsedTime: elapsedTime.toFixed(3),
+                    elapsedTime: newElapsedTime,
                     isCorrect,
                     guestHouseId: guestHouseId
                 }
