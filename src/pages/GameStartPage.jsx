@@ -2,6 +2,8 @@ import { useState,useRef } from 'react'
 import ReactFlipCard from 'reactjs-flip-card'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import MediaCard from '../components/MediaCard';
+import OutlinedCard from '../components/OutlinedCard';
 
 function GameStartPage() {
 
@@ -34,7 +36,7 @@ function GameStartPage() {
         },
     };
 
-    const [shuffledNames, setShuffledNames] = useState([]);
+    const [shuffledNames, setShuffledNames] = useState(["","","","","","","","","","","","",]);
     const [guestHouseId, setGuestHouseId] = useState(null);
     const [originalName, setOriginalName] = useState('');
     const [gameStarted, setGameStarted] = useState(false);
@@ -72,18 +74,7 @@ function GameStartPage() {
             console.error('Failed to start the game');
         }
     };
-    // const handleCardClick = (name) => {
-    //     const trimmedOriginalName = originalName.replace(/\s/g, '');
-    //     if (name === trimmedOriginalName) {
-    //       const now = Date.now();
-    //       setEndTime(now);
-    //       const elapsedTime = (now - startTime) / 1000;
-    //       alert(`게임 완료! 걸린 시간: ${elapsedTime}초`);
-    //     } else {
-    //       console.log(originalNameRef.current);
-    //       alert('땡!');
-    //     }
-    // };
+
         const handleCardClick = (name) => {
 
             const trimmedOriginalName = originalName.replace(/\s/g, '');
@@ -101,8 +92,7 @@ function GameStartPage() {
 
     return (
         <div>
-            <button style={styles.button} onClick={startGame}>{gameStarted ? '게임스타트페이지!' : '게임스타트페이지'}</button>
-
+            
             <div style={styles.gridContainer}>
                 {shuffledNames.map((name, index) => (
                     <ReactFlipCard
@@ -110,12 +100,22 @@ function GameStartPage() {
                         containerStyle={styles.cardContainer}
                         frontStyle={styles.card}
                         backStyle={styles.card}
-                        frontComponent={<div>{gameStarted ? name : '할인쿠폰을 받고 싶다면..?'}</div>}
-                        backComponent={<div>{gameStarted ? '이게 정답..?' : '게임을 시작하세요!'}</div>}
+                        frontComponent={<div>
+                            {gameStarted ? 
+                            <OutlinedCard title={name} subtitle=""  description="" /> 
+                            : <MediaCard photoId={index}/>}
+                        </div>}
+                        backComponent={<div>
+                            {gameStarted ?
+                            <OutlinedCard title="이게 정답..?" subtitle=""  description="" />
+                            :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="클릭해서 게임 시작하기" />
+                        }</div>}
                         onClick={() => handleCardClick(name)}
                     />
                 ))}
             </div>
+            {gameStarted ? null : <button style={styles.button} onClick={startGame}>게임시작</button>}
+
         </div>
     );
 }
