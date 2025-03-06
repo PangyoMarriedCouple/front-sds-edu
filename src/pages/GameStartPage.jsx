@@ -7,6 +7,7 @@ import OutlinedCard from '../components/OutlinedCard';
 import GameStartButton from '../components/GameStartButton';
 import { BorderBottom, BorderColor } from '@mui/icons-material';
 import GameAnswer from '../components/GameAnswer';
+
 function GameStartPage() {
 
     
@@ -238,7 +239,7 @@ function GameStartPage() {
                             <div>
                                 {gameStarted ? 
                                 <OutlinedCard title={name} subtitle=""  description="" isGameStarted={gameStarted}/> 
-                                : <MediaCard photoId={index}/>}
+                                : <MediaCard photoId={index+1}/>}
                             </div>}
                         backComponent={
                             <div>
