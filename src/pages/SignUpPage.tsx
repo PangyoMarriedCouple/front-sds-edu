@@ -20,6 +20,8 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import { useNavigate } from 'react-router-dom';
 
+import axios from 'axios';
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -72,6 +74,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = React.useState('');
   const [sexError, setSexError] = React.useState(false);
   const [SexErrorMessage, setSexErrorMessage] = React.useState('');
+  const [serverError, setServerError] = React.useState("");
   const navigate = useNavigate();
 
 
@@ -123,10 +126,11 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // if (nicknameError || passwordError || phoneNumberError || sexError) {
+    event.preventDefault();
     if (!validateInputs()) {
-      event.preventDefault();
+      //event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
@@ -136,8 +140,39 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       phoneNumber: data.get('phoneNumber'),
       sex: data.get('sex'),
     });
-    alert('Sign Up Complete. Please Sign In');
-    navigate('/');
+    //FormData -> DTO에 맞게 변환
+    const userData = {
+      name: data.get('nickname'),         // nickname -> name
+      phoneNum: data.get('phoneNumber'),  // phoneNumber -> phoneNum
+      sex: data.get('sex'),
+      passWord: data.get('password'),     // password -> passWord
+    };
+
+    //회원가입 수행
+
+    try {
+      const response = await axios.post('http://localhost:8080/users', userData, {
+        headers: {
+          'Content-Type': 'application/json', // JSON 형식으로 보낸다고 명시
+        },
+      });
+      
+      // 요청 성공 시
+      console.log(response.data);  // 서버에서 보낸 응답 확인
+      alert('회원가입에 성공하였습니다. 로그인을 진행해주세요.');
+      navigate('/');
+    } catch (error) {
+      // 요청 실패 시
+      if(error.response){
+        console.error('Sign Up failed:', error.response.data);
+        setServerError(error.response.data);
+        alert('이미 존재하는 아이디입니다. 다시 시도해주세요.');
+      }else{
+        console.error("회원가입 실패: ", error.message);
+        setServerError("서버 연결에 실패했습니다.");
+      }
+      
+    }
   };
 
   return (
