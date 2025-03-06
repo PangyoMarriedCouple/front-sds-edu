@@ -112,7 +112,11 @@ function FlipCardPage() {
                         containerStyle={styles.cardContainer}
                         frontStyle={styles.card}
                         backStyle={styles.card}
-                        frontComponent={<div>{gameStarted ? name : '할인쿠폰을 받고 싶다면..?'}</div>}
+                        frontComponent={
+                        // <div>
+                        <div>
+                      {/* //  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}> */}
+                            {gameStarted ? name : '할인쿠폰을 받고 싶다면..?'}</div>}
                         backComponent={<div>{gameStarted ? '이게 정답..?' : '게임을 시작하세요!'}</div>}
                         onClick={() => handleCardClick(name)}
                     />

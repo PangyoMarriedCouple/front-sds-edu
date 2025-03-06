@@ -237,13 +237,13 @@ function GameStartPage() {
                         frontComponent={
                             <div>
                                 {gameStarted ? 
-                                <OutlinedCard title={name} subtitle=""  description="" /> 
+                                <OutlinedCard title={name} subtitle=""  description="" isGameStarted={gameStarted}/> 
                                 : <MediaCard photoId={index+1}/>}
                             </div>}
                         backComponent={
                             <div>
                                 {gameStarted ?
-                                <OutlinedCard title="이게 정답..?" subtitle=""  description="" />
+                                <OutlinedCard title="이게 정답..?" subtitle=""  description=""  isGameStarted={false}/>
                                 :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="게임시작 클릭!" />}
                             </div>}
                         onClick={() => handleCardClick(name)}
