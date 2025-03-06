@@ -4,11 +4,55 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import MediaCard from '../components/MediaCard';
 import OutlinedCard from '../components/OutlinedCard';
-
+import GameStartButton from '../components/GameStartButton';
+import { BorderBottom, BorderColor } from '@mui/icons-material';
 function GameStartPage() {
 
     
     const styles = {
+        logoBorder:{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom:'2px solid rgb(223, 206, 192)',
+            margin: '10px',
+        },
+        logoContainer: {
+            display: 'flex',
+            //background: 'rgb(237, 228, 220)',
+            //background: '#432B1F',
+            justifyContent: 'left', // 가로 가운데 정렬
+            alignItems: 'center',    // 세로 가운데 정렬 (필요 시)
+            marginTop: '10px',
+            marginLeft: '50px',
+            padding:'5px',
+        },
+        logo: {
+            width: '150px',          // 로고 크기 조정 (원하는 크기로 설정)
+            height: 'auto',          // 비율 유지
+        },
+        // slogan:{
+        //     alignItems: 'right',
+        //     color: 'rgb(174,156,140)',
+            
+        // },
+        slogan: {
+            display: 'flex',
+            flexDirection: 'column',
+            color: 'rgb(174,156,140)',
+            width: '300px', // 부모 너비 전체 사용
+        },
+        sloganTextLeft: {
+            alignSelf: 'flex-start', // 왼쪽 정렬
+            marginLeft: '100px', // 왼쪽으로 이동
+            marginBottom:'1px',
+            fontStyle: 'italic',
+        },
+        sloganTextRight: {
+            alignSelf: 'flex-end', // 오른쪽 정렬
+            marginRight: '30px', // 오른쪽으로 이동
+            marginTop:'1px',
+        },
         cardContainer: {  // 부모 div: 100px × 150px
             width: '150px',
             height: '200px',
@@ -33,6 +77,7 @@ function GameStartPage() {
             justifyContent: 'center',
             alignItems: 'center',
             // padding: '30px',
+            padding: '50px',
         },
     };
 
@@ -167,6 +212,20 @@ function GameStartPage() {
 
     return (
         <div>
+            <div style={styles.logoBorder}>
+                <div style={styles.logoContainer}>
+                    <img src="/src/assets/horLogo2.png" alt="Reserve Rush" style={styles.logo} />
+                </div>
+                <div style={styles.slogan}>
+                    <p style={styles.sloganTextLeft}>
+                        Reserve하려면?
+                    </p>
+                    <p style={styles.sloganTextRight}>
+                        지금 바로 Rush!
+                    </p>
+                </div>
+            </div>
+            
             <div style={styles.gridContainer}>
                 {shuffledNames.map((name, index) => (
                     <ReactFlipCard
@@ -174,22 +233,24 @@ function GameStartPage() {
                         containerStyle={styles.cardContainer}
                         frontStyle={styles.card}
                         backStyle={styles.card}
-                        frontComponent={<div>
-                            {gameStarted ? 
-                            <OutlinedCard title={name} subtitle=""  description="" /> 
-                            : <MediaCard photoId={index}/>}
-                        </div>}
-                        backComponent={<div>
-                            {gameStarted ?
-                            <OutlinedCard title="이게 정답..?" subtitle=""  description="" />
-                            :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="게임시작 클릭!" />
-                        }</div>}
+                        frontComponent={
+                            <div>
+                                {gameStarted ? 
+                                <OutlinedCard title={name} subtitle=""  description="" /> 
+                                : <MediaCard photoId={index}/>}
+                            </div>}
+                        backComponent={
+                            <div>
+                                {gameStarted ?
+                                <OutlinedCard title="이게 정답..?" subtitle=""  description="" />
+                                :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="게임시작 클릭!" />}
+                            </div>}
                         onClick={() => handleCardClick(name)}
                         flipByProp={gameStarted ? false : flipStates[index]}
                     />
                 ))}
             </div>
-            {gameStarted ? null : <button style={styles.button} onClick={startGame}>게임시작</button>}
+            {gameStarted ? null : <GameStartButton style={styles.button} onClick={startGame}/>}
         </div>
     );
 }
