@@ -5,6 +5,7 @@ import GuestHouseResult from '../components/GuestHouseResult';
 const ResultPage = () => {
   const location = useLocation();
   const { elapsedTime, isCorrect, guestHouseId } = location.state;
+  console.log(guestHouseId, isCorrect, elapsedTime);
 
   return (
     <div>
@@ -16,7 +17,6 @@ const ResultPage = () => {
       )}
       <p>⏱️ 걸린 시간: {elapsedTime}초</p>
 
-      {/* 게스트하우스 정보를 보여주는 컴포넌트 */}
       {guestHouseId && <GuestHouseResult guestHouseId={guestHouseId} />}
     </div>
   );
