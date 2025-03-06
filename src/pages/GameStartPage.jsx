@@ -75,8 +75,8 @@ function GameStartPage() {
         }
     };
 
-        const handleCardClick = (name) => {
-
+    const handleCardClick = (name) => {
+        if(gameStarted){
             const trimmedOriginalName = originalName.replace(/\s/g, '');
             const now = Date.now();
             const elapsedTime = (now-startTime)/1000;
@@ -90,10 +90,13 @@ function GameStartPage() {
             navigate('/result',{
                 state:{
                     elapsedTime: elapsedTime.toFixed(3),
-                    isCorrect
+                    isCorrect,
+                    guestHouseId: guestHouseId
                 }
             });
-        };
+        }
+        
+    };
 
         // for auto flip
         const [flipStates, setFlipStates] = useState(new Array(12).fill(false)); // false: 카드가 뒤집어지지 않음
@@ -136,7 +139,6 @@ function GameStartPage() {
 
     return (
         <div>
-            
             <div style={styles.gridContainer}>
                 {shuffledNames.map((name, index) => (
                     <ReactFlipCard
@@ -152,7 +154,7 @@ function GameStartPage() {
                         backComponent={<div>
                             {gameStarted ?
                             <OutlinedCard title="이게 정답..?" subtitle=""  description="" />
-                            :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="클릭해서 게임 시작하기" />
+                            :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="게임시작 클릭!" />
                         }</div>}
                         onClick={() => handleCardClick(name)}
                         flipByProp={gameStarted ? false : flipStates[index]}
@@ -160,7 +162,6 @@ function GameStartPage() {
                 ))}
             </div>
             {gameStarted ? null : <button style={styles.button} onClick={startGame}>게임시작</button>}
-
         </div>
     );
 }

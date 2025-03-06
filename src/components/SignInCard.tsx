@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import verLogo from '../assets/verLogo.png';
 
+
 // const navigate = useNavigate();
 
 const Card = styled(MuiCard)(({ theme }) => ({
