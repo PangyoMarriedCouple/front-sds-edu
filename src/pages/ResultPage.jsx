@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const ResultPage = () => {
   const location = useLocation();
-  const { elapsedTime, isCorrect } = location.state;
+  const { elapsedTime, isCorrect, guestHouseId } = location.state;
 
   return (
     <div>
