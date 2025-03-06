@@ -75,7 +75,12 @@ export default function SignInCard() {
    try {
     const response = await axios.post("http://localhost:8080/users/login", loginData);
     console.log("로그인 성공:", response.data);
-    navigate("/flipcardpage");
+
+    // 유저 정보를 로컬스토리지에 전역적으로 저장!
+    localStorage.setItem("userId", response.data.id );
+    localStorage.setItem("userName", response.data.name );
+
+    navigate("/gamestart");
   } catch (error) {
     if(error.response){
       console.error("로그인 실패: ", error.response.data);

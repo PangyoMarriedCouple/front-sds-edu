@@ -1,4 +1,4 @@
-import { useState,useRef } from 'react'
+import { useState,useRef, useEffect } from 'react'
 import ReactFlipCard from 'reactjs-flip-card'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -82,6 +82,11 @@ function GameStartPage() {
             const elapsedTime = (now-startTime)/1000;
             const isCorrect = name===trimmedOriginalName;
 
+            if(isCorrect===true){
+                // 정답 맞았을 시에 랭킹 추가 
+                
+            }
+
             navigate('/result',{
                 state:{
                     elapsedTime: elapsedTime.toFixed(3),
@@ -89,6 +94,45 @@ function GameStartPage() {
                 }
             });
         };
+
+        // for auto flip
+        const [flipStates, setFlipStates] = useState(new Array(12).fill(false)); // false: 카드가 뒤집어지지 않음
+        useEffect(() => {
+            const interval = setInterval(() => {
+                // 랜덤으로 2개의 카드 인덱스 선택
+                const randomIndexes = [];
+                while (randomIndexes.length < 2) {
+                    const rand = Math.floor(Math.random() * 30);
+                    if (!randomIndexes.includes(rand)) {
+                        randomIndexes.push(rand);
+                    }
+                }
+    
+                // 해당 카드들을 뒤집음
+                setFlipStates(prev => {
+                    const newFlipStates = [...prev];
+                    randomIndexes.forEach(index => {
+                        newFlipStates[index] = true; // 뒤집기
+                    });
+                    return newFlipStates;
+                });
+    
+                // 1초 뒤에 다시 원래 상태로 돌아가도록 설정
+                setTimeout(() => {
+                    setFlipStates(prev => {
+                        const newFlipStates = [...prev];
+                        randomIndexes.forEach(index => {
+                            newFlipStates[index] = false; // 원상복구
+                        });
+                        return newFlipStates;
+                    });
+                }, 1000);
+            }, 1000);
+    
+            return () => clearInterval(interval);
+        }, []);
+
+        console.log( localStorage.getItem("userId") , localStorage.getItem("userName")  );
 
     return (
         <div>
@@ -111,6 +155,7 @@ function GameStartPage() {
                             :  <OutlinedCard title="이 게하, 할인받고 싶다면?" subtitle="최대 10% 할인" description="클릭해서 게임 시작하기" />
                         }</div>}
                         onClick={() => handleCardClick(name)}
+                        flipByProp={gameStarted ? false : flipStates[index]}
                     />
                 ))}
             </div>
