@@ -75,8 +75,8 @@ function GameStartPage() {
         }
     };
 
-        const handleCardClick = (name) => {
-
+    const handleCardClick = (name) => {
+        if(gameStarted){
             const trimmedOriginalName = originalName.replace(/\s/g, '');
             const now = Date.now();
             const elapsedTime = (now-startTime)/1000;
@@ -88,11 +88,14 @@ function GameStartPage() {
                     isCorrect
                 }
             });
-        };
+        }else{
+
+        }
+        
+    };
 
     return (
         <div>
-            
             <div style={styles.gridContainer}>
                 {shuffledNames.map((name, index) => (
                     <ReactFlipCard
@@ -115,7 +118,6 @@ function GameStartPage() {
                 ))}
             </div>
             {gameStarted ? null : <button style={styles.button} onClick={startGame}>게임시작</button>}
-
         </div>
     );
 }
