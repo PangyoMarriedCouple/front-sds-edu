@@ -6,6 +6,7 @@ import MediaCard from '../components/MediaCard';
 import OutlinedCard from '../components/OutlinedCard';
 import GameStartButton from '../components/GameStartButton';
 import { BorderBottom, BorderColor } from '@mui/icons-material';
+import GameAnswer from '../components/GameAnswer';
 
 function GameStartPage() {
 
@@ -251,7 +252,7 @@ function GameStartPage() {
                     />
                 ))}
             </div>
-            {gameStarted ? null : <GameStartButton style={styles.button} onClick={startGame}/>}
+            {gameStarted ? <GameAnswer text={originalName}/> : <GameStartButton style={styles.button} onClick={startGame}/>}
         </div>
     );
 }
