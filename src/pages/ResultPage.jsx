@@ -2,10 +2,12 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import GuestHouseResult from '../components/GuestHouseResult';
 import Top3RankingCard from '../components/Top3RankingCard'
+import Confetti from "react-confetti";
 
 const ResultPage = () => {
 
   const styles = {
+   
     logoBorder:{
       display: 'flex',
       justifyContent: 'space-between',
@@ -48,7 +50,7 @@ const ResultPage = () => {
     container: {
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: "stretch",
       margin: '20px',
       marginTop: '50px',
       
@@ -56,10 +58,10 @@ const ResultPage = () => {
     leftColumn: {
       // flex: 1,
       width: '30%',
-      height: '400px',
-      marginRight: '20px',
+      height: '50%',
+      // marginRight: '20px',
       background: 'rgb(223, 206, 192)',
-      padding: '20px',
+      padding: '10px',
       borderRadius: '15px',
       border: '2px solid rgb(174,156,140)',
       marginRight: '50px',
@@ -68,12 +70,14 @@ const ResultPage = () => {
     rightColumn: {
       // flex: 1,
       width: '70%',
-      height: '400px',
+      height: '50%',
       background: 'rgb(223, 206, 192)',
-      padding: '20px',
+      padding: '10px',
       borderRadius: '15px',
       border: '2px solid rgb(174,156,140)',
-      marginRight: '20px',
+      // marginRight: '20px',
+      marginRight: '50px',
+      marginLeft: '20px',
     },
     title:{
       color:' #432B1F',
@@ -86,10 +90,18 @@ const ResultPage = () => {
 
   return (
     <div>
+      {/* //정답 맞췄을때 */}
+      {isCorrect && (
+      // <Confetti recycle={false} duration={2000} />
+      <>
+        <Confetti recycle={false} duration={50} />
+      </>
+      )}
       <div style={styles.logoBorder}>
         <div style={styles.logoContainer}>
           <img src="/src/assets/horLogo2.png" alt="Reserve Rush" style={styles.logo} />
         </div>
+        
         <div style={styles.slogan}>
           <p style={styles.sloganTextLeft}>
             Reserve하려면?
@@ -99,6 +111,9 @@ const ResultPage = () => {
           </p>
         </div>
       </div>
+      <div style={{ padding:"10px",textAlign: "center", fontSize: "30px", fontWeight: "bold", color: isCorrect ? "green" : "red" }}>
+         {isCorrect ? "🎉 정답을 맞추셨습니다 🎉" : "실패😢😢 다시 도전하세요!"}
+       </div>
 
       <div style={styles.container}>
         <div style={styles.leftColumn}>
@@ -111,8 +126,10 @@ const ResultPage = () => {
           {guestHouseId && <GuestHouseResult guestHouseId={guestHouseId} />}
         </div>
       </div>
+      
 
     </div>
+    
   );
 };
 

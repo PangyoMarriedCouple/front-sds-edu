@@ -72,12 +72,12 @@ return (
     ) : (
       <ul>
         {rankingData.map((item, index) => (
-          <li key={item.id} className="mb-2 p-2 border-b">
+          // <li key={item.id} className="mb-2 p-2 border-b">
+          <li key={item.id} className="p-1 border-b flex items-center gap-2">
             <p>
-              <strong>순위 {index + 1}</strong>
-            </p>
-            <p>사용자 ID: {item.user || "정보 없음"}</p>
-            <p>기록: {item.duration != null ? item.duration + ' 초' : "정보 없음"}</p>
+              <strong>순위 {index + 1}</strong><br/>
+              사용자 ID: {item.user || "정보 없음"}<br/>
+              기록: {item.duration != null ? item.duration + ' 초' : "정보 없음"}</p>
           </li>
         ))}
       </ul>
