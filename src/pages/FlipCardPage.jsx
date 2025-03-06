@@ -48,6 +48,7 @@ function FlipCardPage() {
         try{
             const response = await axios.get('http://localhost:8080/start')
             const data = response.data;
+          //  console.log(data);
             return {
                 guestHouseId: data.guestHouseId,
                 originalName: data.guestHouseName,
