@@ -85,7 +85,8 @@ function GameStartPage() {
             navigate('/result',{
                 state:{
                     elapsedTime: elapsedTime.toFixed(3),
-                    isCorrect
+                    isCorrect,
+                    guestHouseId: guestHouseId
                 }
             });
         }
