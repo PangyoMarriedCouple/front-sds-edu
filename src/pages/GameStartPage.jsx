@@ -75,53 +75,55 @@ function GameStartPage() {
         }
     };
 
-    const addRanking = async ( newElapsedTime ) =>{
-        try{
+    const addRanking = async (newElapsedTime) => {
+        try {
             const rankingData = {
-                userId: localStorage.getItem("userId") ? localStorage.getItem("userId") : "2",
-                guestHouseId: guestHouseId ? guestHouseId : 1,
+                userId: localStorage.getItem("userId") || "2",
+                guestHouseId: guestHouseId || 1,
                 durationSeconds: newElapsedTime,
                 discountRate: 0.1
             };
+            
             const response = await axios.post('http://localhost:8080/ranking/addRanking', rankingData, {
-                headers: {
-                  'Content-Type': 'application/json', 
-                },
+                headers: { 'Content-Type': 'application/json' }
             });
-            const data = response.data;
-            console.log(data);
-            console.log( "랭킹이 기록되었습니다. 서버에 저장된 기록 : " , data?.durationSeconds , "랭킹 아이디 : ", data?.rankingId  );
-        }catch(error){
+    
+            console.log("랭킹이 기록되었습니다. 서버에 저장된 기록:", response.data?.durationSeconds, "랭킹 아이디:", response.data?.rankingId);
+    
+            return response.data; // ✅ 데이터를 반환하여 handleCardClick에서 사용 가능하도록 변경
+        } catch (error) {
             console.error('Error adding Ranking: ', error);
-            return null;
+            return null; // 에러 발생 시 null 반환
         }
     };
 
-    const handleCardClick = (name) => {
-        if(gameStarted){
+    const handleCardClick = async (name) => {
+        if (gameStarted) {
             const trimmedOriginalName = originalName.replace(/\s/g, '');
             const now = Date.now();
             const newElapsedTime = parseFloat(((now - startTime) / 1000).toFixed(3));
-            setElapsedTime( newElapsedTime );
-
-            const isCorrect = name===trimmedOriginalName;
-            console.log(elapsedTime);
-            console.log(isCorrect);
-
-            if(isCorrect===true){
-                // 정답 맞았을 시에 랭킹 추가 
-                addRanking( newElapsedTime );
+            setElapsedTime(newElapsedTime);
+            const isCorrect = name === trimmedOriginalName;
+    
+            if (isCorrect) {
+                try {
+                    // ✅ addRanking의 응답을 기다린 후 실행
+                    const rankingResponse = await addRanking(newElapsedTime);
+                    console.log("랭킹 기록 완료:", rankingResponse);
+                } catch (error) {
+                    console.error("랭킹 저장 중 오류 발생:", error);
+                }
             }
-
-            navigate('/result',{
-                state:{
+    
+            // ✅ 랭킹 저장 완료 후 결과 페이지로 이동
+            navigate('/result', {
+                state: {
                     elapsedTime: newElapsedTime,
                     isCorrect,
                     guestHouseId: guestHouseId
                 }
             });
         }
-        
     };
 
         // for auto flip
