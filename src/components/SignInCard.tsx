@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import verLogo from '../assets/verLogo.png';
 
+
 // const navigate = useNavigate();
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -75,7 +76,7 @@ export default function SignInCard() {
    try {
     const response = await axios.post("http://localhost:8080/users/login", loginData);
     console.log("로그인 성공:", response.data);
-    navigate("/flipcardpage");
+    navigate("/gamestart");
   } catch (error) {
     if(error.response){
       console.error("로그인 실패: ", error.response.data);
