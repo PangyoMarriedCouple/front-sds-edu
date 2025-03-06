@@ -8,6 +8,8 @@ import FlipCardPage from './pages/FlipCardPage.jsx'
 import FlipCardPageStyling from './pages/FlipCardPageStyling.jsx'
 import SignUpPage from './pages/SignUpPage.tsx'
 import ResultPage from './pages/ResultPage.jsx';
+import GameStartPage from './pages/GameStartPage.jsx'
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -41,6 +43,7 @@ function App() {
         <Route path="/" element={<SignInSide />} />
         <Route path="/flipcardpage" element={<FlipCardPage />} />
         <Route path="/styling" element={<FlipCardPageStyling />} />
+        <Route path="/gamestart" element={<GameStartPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/result" element={<ResultPage />} />
       </Routes>
