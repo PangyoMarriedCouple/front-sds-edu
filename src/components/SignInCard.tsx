@@ -15,6 +15,7 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import verLogo from '../assets/verLogo.png';
 
 
 // const navigate = useNavigate();
@@ -214,7 +215,12 @@ export default function SignInCard() {
           </span>
         </Typography>
       </Box>
-      <Divider>or</Divider>
+      <Box>
+        <div style={{textAlign:'center'}}>
+          <img src={verLogo} alt="vertical logo" style={{ width: '280px', height: '150px', objectFit: 'contain' }}/>
+        </div>
+      </Box>
+      {/* <Divider>or</Divider>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Button
           fullWidth
@@ -232,7 +238,7 @@ export default function SignInCard() {
         >
           Sign in with Facebook
         </Button>
-      </Box>
+      </Box> */}
     </Card>
   );
 }
