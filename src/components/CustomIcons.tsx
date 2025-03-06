@@ -1,13 +1,14 @@
 import * as React from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
 import SamsungLogo from '../assets/samsung_logo.png';
+import horLogo2 from '../assets/horLogo2.png'
 
 export function SitemarkIcon() {
   return (
     <img 
-          src={SamsungLogo} 
-          alt="Samsung" 
-          style={{ width: '80px', height: '30px', objectFit: 'contain' }} 
+          src={horLogo2} 
+          alt="Reserve Rush" 
+          style={{ width: '180px', height: '120px', objectFit: 'contain' }} 
         />
     // <SvgIcon sx={{ height: 21, width: 100, mr: 2 }}>
     //   <svg
