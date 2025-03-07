@@ -60,7 +60,8 @@ const Top3RankingCard = ({guestHouseId , rankingId}) => {
                     duration: item.durationSeconds,
                 }));
                 setRankingData(processedData); // 상태 업데이트
-                const foundItem = processedData.find(item => item.id === rankingId);
+                const foundItem = processedData.find(item => item.rankingId === rankingId);
+                console.log(foundItem)
                 if (foundItem) {
                   setTimeout(() => {
                     alert("축하합니다! 3등 안에 들어서 쿠폰이 발급됐습니다!");
