@@ -49,6 +49,7 @@ const ResultPage = () => {
 
     container: {
       display: 'flex',
+      height: '450px',
       justifyContent: 'center',
       alignItems: "stretch",
       margin: '20px',
@@ -58,29 +59,36 @@ const ResultPage = () => {
     leftColumn: {
       // flex: 1,
       width: '30%',
-      height: '50%',
-      // marginRight: '20px',
-      background: 'rgb(223, 206, 192)',
+      height: '100%',
+      // background: 'rgb(223, 206, 192)',
       padding: '10px',
       borderRadius: '15px',
-      border: '2px solid rgb(174,156,140)',
-      marginRight: '50px',
+      // border: '2px solid rgb(174,156,140)',
+      border: '3px solid rgb(223, 206, 192)', 
+      marginRight: '30px',
       marginLeft: '20px',
     },
     rightColumn: {
       // flex: 1,
       width: '70%',
-      height: '50%',
+      height: '100%',
       background: 'rgb(223, 206, 192)',
       padding: '10px',
       borderRadius: '15px',
       border: '2px solid rgb(174,156,140)',
-      // marginRight: '20px',
+      //border: '3px solid rgb(223, 206, 192)', 
       marginRight: '50px',
       marginLeft: '20px',
     },
     title:{
-      color:' #432B1F',
+      paddingLeft:'10px',
+      color:'#432B1F',
+      paddingTop: '10px',
+    },
+    text:{
+      paddingLeft:'15px', 
+      fontSize:'20px', 
+      color:'rgb(117, 87, 60)'
     }
   };
 
@@ -92,11 +100,12 @@ const ResultPage = () => {
     <div>
       {/* //정답 맞췄을때 */}
       {isCorrect && (
-      // <Confetti recycle={false} duration={2000} />
       <>
         <Confetti recycle={false} duration={50} />
       </>
       )}
+
+
       <div style={styles.logoBorder}>
         <div style={styles.logoContainer}>
           <img src="/src/assets/horLogo2.png" alt="Reserve Rush" style={styles.logo} />
@@ -111,14 +120,21 @@ const ResultPage = () => {
           </p>
         </div>
       </div>
-      <div style={{ padding:"10px",textAlign: "center", fontSize: "30px", fontWeight: "bold", color: isCorrect ? "green" : "red" }}>
-         {isCorrect ? "🎉 정답을 맞추셨습니다 🎉" : "실패😢😢 다시 도전하세요!"}
-       </div>
+
+
+      {/* <div style={{ padding:"10px",textAlign: "center", fontSize: "30px", fontWeight: "bold", color: isCorrect ? "green" : "red" }}>
+         {isCorrect ? "🎉 정답!🎉" : "땡😢😢!"}
+       </div> */}
 
       <div style={styles.container}>
         <div style={styles.leftColumn}>
-          <h2 >소요 시간</h2>
-          <p>{elapsedTime}초</p>
+          <h2 style={styles.title}>나의 결과는...?</h2>
+            {isCorrect ? (
+              <div>
+                <p style={styles.text}>정답!</p>
+                <p style={styles.text}>{elapsedTime}초</p>
+              </div>) : 
+              (<p style={styles.text}>실패</p>)}
           {guestHouseId && <Top3RankingCard guestHouseId={guestHouseId} />}
         </div>
         

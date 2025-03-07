@@ -18,6 +18,22 @@ import axios from "axios";
 
 const Top3RankingCard = ({guestHouseId}) => {
 
+    const styles={
+      title: {
+        color: '#432B1F',
+        
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        paddingLeft: '10px',
+        paddingTop: '20px'
+      },
+      rankItem: {
+        paddingLeft:'15px', 
+        color: 'rgb(117, 87, 60)',
+        fontSize: '15px',
+        marginBottom: '5px'
+      }
+    };
     const [guestHouseIdError, setGuestHouseIdError] = React.useState(false);
     const [guestHouseIdErrorMessage, setGuestHouseIdErrorMessage] = React.useState('');
     const [serverError, setServerError] = React.useState("");
@@ -56,31 +72,29 @@ const Top3RankingCard = ({guestHouseId}) => {
     }, [guestHouseId]);
 
 return (
-  <div className="p-4 border rounded-lg shadow-md">
-    <h2 className="text-lg font-semibold mb-2">Top 3 Users</h2>
+  <div>
+    <h2 style={styles.title}>상위 랭커는...?</h2>
 
-    {guestHouseIdError && <p className="text-red-500">{guestHouseIdErrorMessage}</p>}
+    {guestHouseIdError && <p>{guestHouseIdErrorMessage}</p>}
 
     {serverError && (
-      <div className="p-2 bg-red-100 text-red-700 border border-red-400 rounded">
+      <div>
         {serverError}
       </div>
     )}
 
     {rankingData.length === 0 ? (
-      <p>데이터가 없습니다.</p>
-    ) : (
-      <ul>
+      <p style={styles.rankItem}>데이터가 없습니다.</p>) :
+       (<ul>
         {rankingData.map((item, index) => (
           // <li key={item.id} className="mb-2 p-2 border-b">
-          <li key={item.id} className="p-1 border-b flex items-center gap-2">
-            <p>
+          <li key={item.id}>
+            <p style={styles.rankItem}>
               <strong>순위 {index + 1}</strong><br/>
               사용자 ID: {item.user || "정보 없음"}<br/>
               기록: {item.duration != null ? item.duration + ' 초' : "정보 없음"}</p>
           </li>
-        ))}
-      </ul>
+      ))}</ul>
     )}
   </div>
 );
