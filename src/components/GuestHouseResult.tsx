@@ -10,6 +10,8 @@ interface GuestHouseRes {
 }
 
 const GuestHouseResult = ({ guestHouseId }: { guestHouseId: number }) => {
+
+  guestHouseId = ((guestHouseId - 1) % 12) + 1;
   const [guestHouse, setGuestHouse] = useState<GuestHouseRes | null>(null);
 
   useEffect(() => {
