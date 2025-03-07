@@ -93,7 +93,7 @@ const ResultPage = () => {
   };
 
   const location = useLocation();
-  const { elapsedTime, isCorrect, guestHouseId } = location.state;
+  const { elapsedTime, isCorrect, guestHouseId, rankingId } = location.state;
   console.log(guestHouseId, isCorrect, elapsedTime);
 
   return (

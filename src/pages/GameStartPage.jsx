@@ -152,10 +152,11 @@ function GameStartPage() {
             setElapsedTime(newElapsedTime);
             const isCorrect = name === trimmedOriginalName;
     
+            let rankingResponse = null;
             if (isCorrect) {
                 try {
                     // ✅ addRanking의 응답을 기다린 후 실행
-                    const rankingResponse = await addRanking(newElapsedTime);
+                    rankingResponse = await addRanking(newElapsedTime);
                     console.log("랭킹 기록 완료:", rankingResponse);
                 } catch (error) {
                     console.error("랭킹 저장 중 오류 발생:", error);
@@ -167,7 +168,8 @@ function GameStartPage() {
                 state: {
                     elapsedTime: newElapsedTime,
                     isCorrect,
-                    guestHouseId: guestHouseId
+                    guestHouseId: guestHouseId,
+                    rankingId: rankingResponse? rankingResponse.rankingId : -1
                 }
             });
         }

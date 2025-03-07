@@ -11,6 +11,8 @@ interface GuestHouseRes {
 
 
 const GuestHouseResult = ({ guestHouseId }: { guestHouseId: number }) => {
+
+  guestHouseId = ((guestHouseId - 1) % 12) + 1;
   const styles = {
     container: {
       display: 'flex',
