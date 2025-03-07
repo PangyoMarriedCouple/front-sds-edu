@@ -49,7 +49,7 @@ const ResultPage = () => {
 
     container: {
       display: 'flex',
-      height: '450px',
+      height: '500px',
       justifyContent: 'center',
       alignItems: "stretch",
       margin: '20px',
@@ -87,7 +87,7 @@ const ResultPage = () => {
     },
     text:{
       paddingLeft:'15px', 
-      fontSize:'20px', 
+      fontSize:'17px', 
       color:'rgb(117, 87, 60)'
     }
   };
@@ -120,11 +120,6 @@ const ResultPage = () => {
           </p>
         </div>
       </div>
-
-
-      {/* <div style={{ padding:"10px",textAlign: "center", fontSize: "30px", fontWeight: "bold", color: isCorrect ? "green" : "red" }}>
-         {isCorrect ? "🎉 정답!🎉" : "땡😢😢!"}
-       </div> */}
 
       <div style={styles.container}>
         <div style={styles.leftColumn}>
