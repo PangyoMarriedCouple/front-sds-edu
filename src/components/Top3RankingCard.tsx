@@ -16,7 +16,7 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-const Top3RankingCard = ({guestHouseId}) => {
+const Top3RankingCard = ({guestHouseId , rankingId}) => {
 
     const [guestHouseIdError, setGuestHouseIdError] = React.useState(false);
     const [guestHouseIdErrorMessage, setGuestHouseIdErrorMessage] = React.useState('');
@@ -44,7 +44,12 @@ const Top3RankingCard = ({guestHouseId}) => {
                     duration: item.durationSeconds,
                 }));
                 setRankingData(processedData); // 상태 업데이트
-
+                const foundItem = processedData.find(item => item.id === rankingId);
+                if (foundItem) {
+                  setTimeout(() => {
+                    alert("축하합니다! 3등 안에 들어서 쿠폰이 발급됐습니다!");
+                }, 3000);
+                } 
             } catch (error) {
                 console.error(error);
                 setServerError("서버 요청 중 오류가 발생했습니다.");

@@ -85,7 +85,7 @@ const ResultPage = () => {
   };
 
   const location = useLocation();
-  const { elapsedTime, isCorrect, guestHouseId } = location.state;
+  const { elapsedTime, isCorrect, guestHouseId, rankingId } = location.state;
   console.log(guestHouseId, isCorrect, elapsedTime);
 
   return (
@@ -119,7 +119,7 @@ const ResultPage = () => {
         <div style={styles.leftColumn}>
           <h2 >소요 시간</h2>
           <p>{elapsedTime}초</p>
-          {guestHouseId && <Top3RankingCard guestHouseId={guestHouseId} />}
+          {guestHouseId && <Top3RankingCard guestHouseId={guestHouseId} rankingId={rankingId}/>}
         </div>
         
         <div style={styles.rightColumn}>
