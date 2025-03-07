@@ -9,9 +9,68 @@ interface GuestHouseRes {
   bookedRooms: number;
 }
 
+
 const GuestHouseResult = ({ guestHouseId }: { guestHouseId: number }) => {
 
   guestHouseId = ((guestHouseId - 1) % 12) + 1;
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      paddingLeft: '20px',
+      paddingTop: '10px',
+    },
+    infoContainer: {
+      display: 'flex',
+      flexDirection: 'row', // 세로 정렬
+      alignItems: 'center', // 가운데 정렬
+      width: '100%',
+      maxWidth: '80%',
+      color: 'rgb(95, 61, 31)',
+      fontSize: '17px',
+    },
+    imageContainer: {
+      width: '80%',
+      height: 'auto',
+      display: 'flex',
+      paddingTop:'20px',
+      paddingLeft:'15px',
+      // justifyContent: 'center', // 이미지 가운데 정렬
+    },
+    image: {
+      width: '100%',
+      height: 'auto',
+      objectFit: 'cover',
+      borderRadius: '10px',
+    },
+    infoText: {
+      width: '200px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end', // 내용을 아래쪽으로 정렬
+      height: '100%', // 부모 컨테이너의 전체 높이를 사용
+      textAlign: 'left',
+      paddingLeft: '20px',
+    },
+    name:{
+      fontSize: '20px',
+      fontStyle: 'strong',
+      margin: '0',
+      padding:'0',
+    },
+    location:{
+      margin: '0',
+      padding:'0',
+      fontSize: '15px',
+    },
+    price:{
+      margin:'0',
+      padding:'0',
+      fontSize:'15px',
+    }
+  };
+
   const [guestHouse, setGuestHouse] = useState<GuestHouseRes | null>(null);
 
   useEffect(() => {
@@ -38,43 +97,31 @@ const GuestHouseResult = ({ guestHouseId }: { guestHouseId: number }) => {
   }
 
   return (
-    <div style={{
-      display:"flex",
-      flexDirection:"column",
-      // justifyContent:"space-between",
-      // justifyContent:"left",
-      alignItems:"center",
-      height:"100%",
-      padding:"20px"
-    }}>
-
-      <h1 style={{ textAlign: "center", marginBottom: "20px"}}>
-        {guestHouse.name}의 정보가 궁금하다면 ?</h1>
-      <div style={{
-        display: "flex",
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems:"center",
-        width: "100%",
-        maxWidth: "80%",
-      }}>
-        <div style={{width:"20%"}}>
-          <p>이름: {guestHouse.name}</p>
-          <p>위치: {guestHouse.location}</p>
-          <p>가격: {guestHouse.price}원</p>
-          <p>수용 가능 인원: {guestHouse.capacity}명</p>
-        </div>
-        <div style={{width:"80%", display:"flex", justifyContent:"center"}}>
+    <div style={styles.container}>
+      <h2 style={{ color: '#432B1F' }}>
+        이 게스트하우스의 정보가 궁금하다면...?
+      </h2>
+      
+      <div style={styles.infoContainer}>
+        {/* 이미지 섹션 */}
+        <div style={styles.imageContainer}>
           <img
             src={`../static/gh${guestHouseId}.jpg`}
-            style={{width:"450px", height:"300px", objectFit:"cover",borderRadius:"10px"}}
-          ></img>
+            alt="게스트하우스 이미지"
+            style={styles.image}
+          />
+        </div>
+
+        {/* 정보 섹션 */}
+        <div style={styles.infoText}>
+          <h3 style={styles.name}>{guestHouse.name}</h3>
+          <h5>{guestHouse.location}</h5>
+          <p style={styles.price}>₩ {guestHouse.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} / 박</p>
         </div>
       </div>
-      
     </div>
-
   );
+
 };
 
 export default GuestHouseResult;
